@@ -11,10 +11,10 @@ document
 //previne o comportamento padrão do formulário, ou seja, impede que ele saja enviado e recarregue a página
 event.preventDefault()
 //Captura os valores dos compos de formulario
-const nome = document.getElementById("nome");
+const name = document.getElementById("name");
 const cpf = document.getElementById("cpf");
 const email = document.getElementById("email");
-const senha = document.getElementById("senha");
+const password = document.getElementById("password");
 
 //Requisção HTTP para o endpoint de cadastro de usuário
 fetch("http://localhost:5000/api/v1/user",{
@@ -25,6 +25,7 @@ fetch("http://localhost:5000/api/v1/user",{
         "Conten-Type":application/json
     },
     //Transforma os dados do formulário em uma string json para serem emviados no corpo da requisição
-    body:JSON.stringify
+    body:JSON.stringify({name,cpf,password,email}),
 })
+
 });
