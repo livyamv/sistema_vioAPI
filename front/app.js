@@ -11,4 +11,9 @@ const nome = document.getElementById("nome");
 const cpf = document.getElementById("cpf");
 const email = document.getElementById("email");
 const senha = document.getElementById("senha");
+
+//Requisção HTTP para o endpoint de cadastro de usuário
+fetch("http://localhost:5000/api/v1/user",{
+    //Realiza uma chamada HTTP para o servidor (a rota definida)
+})
 });
