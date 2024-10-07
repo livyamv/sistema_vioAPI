@@ -1,4 +1,8 @@
 //Acessao objeto "document" que  respresenta a página html
+
+const { json } = require("body-parser");
+const { application } = require("express");
+
 //Seleciona o elemento com o id indicado do formulário
 document
 .getElementById("formulário-registro")
@@ -15,5 +19,12 @@ const senha = document.getElementById("senha");
 //Requisção HTTP para o endpoint de cadastro de usuário
 fetch("http://localhost:5000/api/v1/user",{
     //Realiza uma chamada HTTP para o servidor (a rota definida)
+    method:"POST",
+    headers:{
+        //A requisição será em formato json
+        "Conten-Type":application/json
+    },
+    //Transforma os dados do formulário em uma string json para serem emviados no corpo da requisição
+    body:JSON.stringify
 })
 });
