@@ -1,5 +1,5 @@
-let organizador = [];
-let id_organizador = 0;
+let organizadores = [];
+let id_organizadores = 0;
 module.exports = class organizadorController {
   static async createOrganizador(req, res) {
     const { nome, email, senha, telefone } = req.body;
@@ -22,25 +22,25 @@ module.exports = class organizadorController {
     }
 
     // Verifica se já existe um usuário com o mesmo Email
-    const existingOrganizador = organizador.find((organizador) => organizador.email === email);
+    const existingOrganizador = organizadores.find((organizador) => organizador.email === email);
     if (existingOrganizador) {
       return res.status(400).json({ error: "Email já cadastrado" });
     }
 
     // Cria e adiciona novo usuário
-    const newOrganizador = { id: id_organizador++, nome, email, senha, telefone };
-    organizador.push(newOrganizador);
+    const newOrganizador = { id: id_organizadores++, nome, email, senha, telefone };
+    organizadores.push(newOrganizador);
 
     return res
       .status(201)
-      .json({ message: "Organizador criado com sucesso", organizador: newOrganizador }); //201 significa cadastrado
+      .json({ message: "Organizador criado com sucesso", organizadores: newOrganizador }); //201 significa cadastrado
   }
 
-  static async getAllOrganizador(req, res) {
+  static async getAllOrganizadores(req, res) {
     //Lista todos os usuarios
     return res
       .status(200)
-      .json({ message: "Obtendo todos os Organizadores", organizador }); //200 significa sucesso
+      .json({ message: "Obtendo todos os Organizadores", organizadores }); //200 significa sucesso
   }
 
   static async updateOrganizador(req, res) {
@@ -54,7 +54,7 @@ module.exports = class organizadorController {
         .json({ error: "Todos os campos devem ser preenchidos" });
     }
     // Procurar o indice do organizador no Array 'organizadores' pelo id
-    const organizadorIndex = organizador.findIndex((organizador) => organizador.id === id);
+    const organizadorIndex = organizadores.findIndex((organizador) => organizador.id === id);
 
     // Se o organizador não for encontrado organizadorIndex equivale a -1
     if (organizadorIndex === -1) {
@@ -62,11 +62,11 @@ module.exports = class organizadorController {
     }
 
     // Atualiza os dados do organizador do Array 'organizadores'
-    organizador[organizadorIndex] = { id, nome, email, senha, telefone };
+    organizadores[organizadorIndex] = { id, nome, email, senha, telefone };
 
     return res
       .status(200)
-      .json({ message: "Organizador atualizado", organizador: organizador[organizadorIndex] });
+      .json({ message: "Organizador atualizado", organizador: organizadores[organizadorIndex] });
   }
 
   static async deleteOrganizador(req, res) {
@@ -74,7 +74,7 @@ module.exports = class organizadorController {
     const organizadorId = req.params.id;
 
     // Procurar o indice do organizador no Array 'organizadores' pelo email
-    const organizadorIndex = organizador.findIndex((organizador) => organizador.id == organizadorId);
+    const organizadorIndex = organizadores.findIndex((organizador) => organizador.id == organizadorId);
 
     // Se o usuário não for encontrado organizadorIndex equivale a -1
     if (organizadorIndex === -1) {
@@ -82,7 +82,7 @@ module.exports = class organizadorController {
     }
 
     //Removendo o usuário do Array 'organizadores'
-    organizador.splice(organizadorIndex, 1);
+    organizadores.splice(organizadorIndex, 1);
 
     return res.status(200).json({message: "Organizador Apagado"});
   }

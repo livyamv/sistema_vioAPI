@@ -1,5 +1,4 @@
-let users = []; //Lista(array) chamada de usuário
-
+const connect = require("../db/connect");
 module.exports = class userController {
   static async createUser(req, res) {
     const { cpf, email, password, name } = req.body;
@@ -17,28 +16,40 @@ module.exports = class userController {
     } else if (!email.includes("@")) {
       //Varificar se na const email inclui @
       return res.status(400).json({ error: "Email inválido. Deve conter @" });
+    } else {
+      // Construção da query INSERT
+      const query = `INSERT INTO usuario (cpf, password, email, name) VALUES('${cpf}','${password}','${email}','${name}')`;
+      // Executando a query criada
+      try {
+        connect.query(query, function (err) {
+          if (err) {
+            if (err.code === "ER_DUP_ENTRY") {
+              return res.status(400).json({
+                error: "O email já esta vinculado a outro usuário",
+              });
+            } else {
+              return res.status(400).json({
+                error: "Erro interno do servidor",
+              });
+            }
+          } else {
+            return res
+              .status(201)
+              .json({ message: "Usuário criado com sucesso" });
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Erro interno do servidor" });
+      }
     }
-
-    // Verifica se já existe um usuário com o mesmo CPF(existingUser)
-    const existingUser = users.find((user) => user.cpf === cpf);
-    if (existingUser) {
-      return res.status(400).json({ error: "CPF já cadastrado" });
-    }
-
-    // Cria e adiciona novo usuário
-    const newUser = { cpf, email, password, name };
-    users.push(newUser);
-
-    return res //Cadastro concluido
-      .status(201)
-      .json({ message: "Usuário criado com sucesso", user: newUser });
   }
 
   static async getAllUsers(req, res) {
     //Pegar todos os usuarios e mandar uma resposta de 200
     return res
       .status(200)
-      .json({ message: "Obtendo todos os usuários", users });
+      .json({ message: "Obtendo todos os usuários" });
   }
 
   static async updateUser(req, res) {
@@ -74,7 +85,7 @@ module.exports = class userController {
       return res.status(400).json({ error: "Usuário não encontrado" });
     }
     //Removendo o usuário do array 'users'
-    users.splice(userIndex,1);
+    users.splice(userIndex, 1);
     return res.status(200).json({ error: "Usuário Apagado" });
   }
 };
