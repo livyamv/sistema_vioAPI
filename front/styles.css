@@ -17,7 +17,7 @@ body {
 
 /* Estilo do cabeçalho */
 header {
-    background-color: #4CAF50; /* Define a cor de fundo do cabeçalho */
+    background-color: #89a7b1; /* Define a cor de fundo do cabeçalho */
     padding: 20px; /* Espaçamento interno */
     text-align: center; /* Centraliza o texto */
     color: white; /* Define a cor do texto no cabeçalho */
@@ -51,19 +51,19 @@ nav ul {
 }
 
 /* Estilo de cada item da lista de navegação */
-nav ul li {
+nav ul li2 {
     margin: 0 15px; /* Espaçamento horizontal entre os itens */
 }
 
 /* Estilo dos links de navegação */
-nav ul li a {
+nav ul li2 a {
     color: white; /* Cor do texto dos links */
     text-decoration: none; /* Remove o sublinhado dos links */
     font-weight: bold; /* Texto em negrito */
 }
 
 /* Estilo ao passar o mouse sobre os links */
-nav ul li a:hover {
+nav ul li2 a:hover {
     text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
 }
 
@@ -79,7 +79,7 @@ main section {
 
 /* Seletor de ID para a seção 'home' */
 #home {
-    background-color: #afd8de; /* Cor de fundo para destacar a seção 'home' */
+    background-color: #cbdad5; /* Cor de fundo para destacar a seção 'home' */
     padding: 20px; /* Espaçamento interno */
     border-radius: 8px; /* Bordas arredondadas */
     text-align: center; /* Centraliza o texto */
@@ -87,7 +87,7 @@ main section {
 
 /* Estilo específico para o título dentro da seção 'home' */
 #home h2 {
-    color: #00796b; /* Cor específica para o título da seção 'home' */
+    color: #566981; /* Cor específica para o título da seção 'home' */
 }
 
 /* Estilo do contêiner que agrupa os eventos */
@@ -104,13 +104,31 @@ main section {
     flex: 1; /* Faz com que os itens se ajustem dinamicamente */
 }
 
+.list-cadastrados{
+background-color: #fff;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+max-width: 400px;
+width: 100%;
+}
+
+
 /* Estilo do rodapé */
 footer {
-    background-color: #333; /* Cor de fundo escura */
+    background-color: #34344e; /* Cor de fundo escura */
     color: white; /* Cor do texto do rodapé */
     text-align: center; /* Centraliza o texto */
     padding: 20px 0; /* Espaçamento interno no topo e na base */
     width: 100%; /* Faz com que o rodapé ocupe toda a largura */
     position: absolute; /* Posiciona o rodapé de forma absoluta */
     bottom: 0; /* Posiciona o rodapé na parte inferior da página */
+}
+
+li { 
+    background-color: #6c8997; /* Cor de fundo escura */
+    color: white; /* Cor do texto do rodapé */
+    text-align: center; /* Centraliza o texto */
+    padding: 20px 0; /* Espaçamento interno no topo e na base */
+    width: 100%; 
 }
