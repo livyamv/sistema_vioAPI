@@ -104,15 +104,6 @@ main section {
     flex: 1; /* Faz com que os itens se ajustem dinamicamente */
 }
 
-.list-cadastrados{
-background-color: #fff;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-max-width: 400px;
-width: 100%;
-}
-
 
 /* Estilo do rodapé */
 footer {
@@ -123,12 +114,4 @@ footer {
     width: 100%; /* Faz com que o rodapé ocupe toda a largura */
     position: absolute; /* Posiciona o rodapé de forma absoluta */
     bottom: 0; /* Posiciona o rodapé na parte inferior da página */
-}
-
-li { 
-    background-color: #6c8997; /* Cor de fundo escura */
-    color: white; /* Cor do texto do rodapé */
-    text-align: center; /* Centraliza o texto */
-    padding: 20px 0; /* Espaçamento interno no topo e na base */
-    width: 100%; 
 }
