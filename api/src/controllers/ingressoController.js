@@ -1,35 +1,34 @@
 const connect = require("../db/connect");
 
-module.exports = class ingressoController{
+module.exports = class ingressoController {
   //criação de um ingresso
-  static async createIngresso(req, res){
-    const {preco, tipo, fk_id_evento} = req.body;
+  static async createIngresso(req, res) {
+    const { preco, tipo, fk_id_evento } = req.body;
 
     //validação genérica de todos os atributos
-    if(!preco || !tipo || !fk_id_evento){
-        return res.status(400).json({error: "Todos os campos devem ser prenchidos!"});
+    if (!preco || !tipo || !fk_id_evento) {
+      return res
+        .status(400)
+        .json({ error: "Todos os campos devem ser prenchidos!" });
     }
-    if (tipo != "VIP" || tipo != "PISTA" ) {
-        return res
-          .status(400)
-          .json({ error: "O ingresso deve ser VIP ou PISTA" });
-      }
 
     const query = `insert into ingresso (preco, tipo, fk_id_evento) values (?,?,?)`;
     const values = [preco, tipo, fk_id_evento];
-    try{
-        connect.query(query, values, (err) => {
-            if(err){
-                console.log(err);
-                return res.status(500).json({error: "Erro ao criar o ingresso!"});
-            }
-            return res.status(201).json({message: "Ingresso criado com sucesso!"});
-        })
-    } catch(error){
-        console.log("Erro ao executar consulta:", error); //o programador que irá ver está mensagem
-        return res.status(500).json({error: "Erro interno do servidor!"});
+    try {
+      connect.query(query, values, (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: "Erro ao criar o ingresso!" });
+        }
+        return res
+          .status(201)
+          .json({ message: "Ingresso criado com sucesso!" });
+      });
+    } catch (error) {
+      console.log("Erro ao executar consulta:", error); //o programador que irá ver está mensagem
+      return res.status(500).json({ error: "Erro interno do servidor!" });
     }
-}
+  }
   //Visualizar todos os ingressos
   static async getAllIngresso(req, res) {
     const query = `select * from ingresso`;
@@ -40,12 +39,10 @@ module.exports = class ingressoController{
           console.log(err);
           return res.status(500).json({ error: "Erro ao buscar ingresso" });
         }
-        return res
-          .status(200)
-          .json({
-            message: "Ingressos listados com sucesso!",
-            ingresso: results,
-          });
+        return res.status(200).json({
+          message: "Ingressos listados com sucesso!",
+          ingresso: results,
+        });
       });
     } catch (error) {
       console.log("Erro ao executar a query: ", error);
