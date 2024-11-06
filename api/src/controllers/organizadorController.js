@@ -25,7 +25,7 @@ module.exports = class organizadorController {
           if (err) {
             if (err.code === "ER_DUP_ENTRY") {
               return res.status(400).json({
-                error: "O email já esta vinculado a outro orgaizador",
+                error: "O email já esta vinculado a outro organizador",
               });
             } else {
               return res.status(400).json({

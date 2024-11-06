@@ -1,4 +1,4 @@
-//Importa a instância do Express configurada em index.js
+// Importa a instância do Express configurada em index.js
 const app = require("./index");
 const cors = require('cors');
 
