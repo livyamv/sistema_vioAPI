@@ -122,7 +122,7 @@ footer {
     padding: 0; /* Remove o preenchimento padrão */
     max-width: 600px; /* Define uma largura máxima para a lista */
     margin: 20px auto; /* Centraliza a lista horizontalmente e adiciona espaço acima e abaixo */
-    background-color: #fff; /* Cor de fundo branca */
+    background-color: #7d7d7d; /* Cor de fundo branca */
     border-radius: 8px; /* Bordas arredondadas */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidade */
   }
@@ -164,12 +164,12 @@ table {
   }
   
   th {
-    background-color: #024d6b; /* Cor de fundo para cabeçalho */
+    background-color: #89a7b1; /* Cor de fundo para cabeçalho */
     color: white; /* Cor do texto no cabeçalho */
   }
   
   tr:nth-child(even) {
-    background-color: #f2f2f2; /* Cor de fundo para linhas pares */
+    background-color: #f0fffa; /* Cor de fundo para linhas pares */
   }
   
   tr:hover {

@@ -14,12 +14,6 @@ router.get('/organizador', organizadorController.getAllOrganizador);
 router.put('/organizador', organizadorController.updateOrganizador);
 router.delete('/organizador/:id', organizadorController.deleteOrganizador);
 
-const eventoController = require("../controllers/eventoController")
-//Rotas evento controler
-router.post('/evento', eventoController.createEvento);
-router.get('/evento', eventoController.getAllEvento);
-router.put('/evento', eventoController.updateEvento);
-router.delete('/evento/:id',eventoController.deleteEvento);
 
 const ingressoController = require("../controllers/ingressoController")
 //Rotas ingresso controler
@@ -28,4 +22,13 @@ router.get('/ingresso', ingressoController.getAllIngresso);
 router.put('/ingresso', ingressoController.updateIngresso);
 router.delete('/ingresso/:id',ingressoController.deleteIngresso);
 
+
+//rotas eventoController
+const eventoController = require("../controllers/eventoController")
+router.post('/evento', eventoController.createEvento);
+router.get('/evento', eventoController.getAllEventos);
+router.put('/evento', eventoController.updateEvento);
+router.delete('/evento/:id', eventoController.deleteEvento);
+router.get('/evento/data', eventoController.getEventosPorData);
+router.get('/evento/proximo', eventoController.getEventosdia);
 module.exports = router
