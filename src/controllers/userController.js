@@ -1,47 +1,43 @@
 const connect = require("../db/connect");
+const validateUser = require("../services/valideteUser");
+const validateCpf = require("../services/validateCpf");
 module.exports = class userController {
   static async createUser(req, res) {
     const { cpf, email, password, name, data_nascimento } = req.body;
+    const validationError = validateUser(req.body);
+    if (validationError) {
+      return res.status(400).json(validationError);
+    }
 
-    if (!cpf || !email || !password || !name || !data_nascimento) {
-      //Se essas constantes estiver vazio tera uma res: Status 400
-      return res
-        .status(400)
-        .json({ error: "Todos os campos devem ser preenchidos" });
-    } else if (isNaN(cpf) || cpf.length !== 11) {
-      //Varificar se na const cpf tem 11 digitos
-      return res.status(400).json({
-        error: "CPF inválido. Deve conter exatamente 11 dígitos numéricos",
-      });
-    } else if (!email.includes("@")) {
-      //Varificar se na const email inclui @
-      return res.status(400).json({ error: "Email inválido. Deve conter @" });
-    } else {
-      // Construção da query INSERT
-      const query = `INSERT INTO usuario (cpf, password, email, name, data_nascimento) VALUES('${cpf}','${password}','${email}','${name}','${data_nascimento}')`;
-      // Executando a query criada
-      try {
-        connect.query(query, function (err) {
-          if (err) {
-            if (err.code === "ER_DUP_ENTRY") {
-              return res.status(400).json({
-                error: "O email já esta vinculado a outro usuário",
-              });
-            } else {
-              return res.status(400).json({
-                error: "Erro interno do servidor",
-              });
-            }
+    const cpfValidation = await validateCpf(cpf, null);
+    if (cpfValidation) {
+      return res.status(400).json(cpfValidation);
+    }
+
+    // Construção da query INSERT
+    const query = `INSERT INTO usuario (cpf, password, email, name, data_nascimento) VALUES('${cpf}','${password}','${email}','${name}','${data_nascimento}')`;
+    // Executando a query criada
+    try {
+      connect.query(query, function (err) {
+        if (err) {
+          if (err.code === "ER_DUP_ENTRY") {
+            return res.status(400).json({
+              error: "O email já esta vinculado a outro usuário",
+            });
           } else {
-            return res
-              .status(201)
-              .json({ message: "Usuário criado com sucesso" });
+            return res.status(400).json({
+              error: "Erro interno do servidor",
+            });
           }
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Erro interno do servidor" });
-      }
+        } else {
+          return res
+            .status(201)
+            .json({ message: "Usuário criado com sucesso" });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro interno do servidor" });
     }
   }
 
@@ -66,15 +62,17 @@ module.exports = class userController {
   static async updateUser(req, res) {
     // Desestrutura e recupera os dados enviados via corpo da requisição
     const { id, name, email, password, cpf } = req.body;
+    const validation = validateUser(req.body);
+    if (validation) {
+      return res.status(400).json(validation);
+    }
 
-    // Validar se todos os campos foram preenchidos
-    if (!cpf || !password || !email || !name || !data_nascimento) {
-      return res
-        .status(400)
-        .json({ error: "Todos os campos devem ser preenchidos" });
+    const cpfValidation = await validateCpf(cpf, id);
+    if (cpfValidation) {
+      return res.status(400).json(cpfValidation);
     }
     const query = `UPDATE usuario SET name=?,email=?,password=?,cpf=? WHERE id_usuario = ?`;
-    const values = [name, email, password, cpf,data_nascimento, id];
+    const values = [name, email, password, cpf, data_nascimento, id];
 
     try {
       connect.query(query, values, function (err, results) {
@@ -123,38 +121,36 @@ module.exports = class userController {
       return res.status(500).json({ error: "Erro interno no servidor" });
     }
   }
-  static async loginUser(req, res){
-    const {email, password} = req.body
+  static async loginUser(req, res) {
+    const { email, password } = req.body;
 
-    if(!email || !password){
-      return res.status(400).json({error:"Email e senha são obrigatórios"})
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email e senha são obrigatórios" });
     }
 
-    const query = `SELECT * FROM usuario WHERE email = ?`
+    const query = `SELECT * FROM usuario WHERE email = ?`;
 
     try {
-      connect.query(query,[email],(err,results) =>{
-        if(err){
+      connect.query(query, [email], (err, results) => {
+        if (err) {
           console.log(err);
-          return res.status(500).json({error:"Erro interno no servidor"})
+          return res.status(500).json({ error: "Erro interno no servidor" });
         }
 
-        if(results.length===0){
-          return res.status(404).json({error:"Usuário não encontrado"})
+        if (results.length === 0) {
+          return res.status(404).json({ error: "Usuário não encontrado" });
         }
         const user = results[0];
 
-        if(user.password !== password){
-          return res.status(403).json({error:"Senha incorreta"})
+        if (user.password !== password) {
+          return res.status(403).json({ error: "Senha incorreta" });
         }
 
-        return res.status(200).json({message:"Login bem sucedido", user})
-
-      })
+        return res.status(200).json({ message: "Login bem sucedido", user });
+      });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({error:"Erro interno no servidor"})
+      return res.status(500).json({ error: "Erro interno no servidor" });
     }
-
   }
 };
