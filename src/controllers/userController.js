@@ -11,11 +11,11 @@ module.exports = class userController {
       return res.status(400).json(validationError);
     }
 
-    try {
+    try {      
       const cpfError = await validateCpf(cpf);
       if (cpfError) {
         return res.status(400).json(cpfError);
-      }
+      }      
 
       const query = `INSERT INTO usuario (cpf, password, email, name, data_nascimento) VALUES (?, ?, ?, ?, ?)`;
       connect.query(
@@ -24,15 +24,14 @@ module.exports = class userController {
         (err) => {
           if (err) {
             if (err.code === "ER_DUP_ENTRY") {
-              if (err.message.includes('email')) {
+              if (err.message.includes("for key 'email'")) {
                 return res.status(400).json({ error: "Email já cadastrado" });
-              } 
+              }
+            } else {
+              return res
+                .status(500)
+                .json({ error: "Erro interno do servidor", err });
             }
-          }
-          else {
-            return res
-              .status(500)
-              .json({ error: "Erro interno do servidor", err });
           }
           return res
             .status(201)
@@ -43,6 +42,7 @@ module.exports = class userController {
       return res.status(500).json({ error });
     }
   }
+
   static async getAllUsers(req, res) {
     const query = `SELECT * FROM usuario`;
 
