@@ -1,3 +1,4 @@
+const jwt = require ("jsonwebtoken");
 const connect = require("../db/connect");
 const validateUser = require("../services/validateUser");
 const validateCpf = require("../services/validateCpf");
@@ -11,11 +12,11 @@ module.exports = class userController {
       return res.status(400).json(validationError);
     }
 
-    try {      
+    try {
       const cpfError = await validateCpf(cpf);
       if (cpfError) {
         return res.status(400).json(cpfError);
-      }      
+      }
 
       const query = `INSERT INTO usuario (cpf, password, email, name, data_nascimento) VALUES (?, ?, ?, ?, ?)`;
       connect.query(
@@ -42,7 +43,6 @@ module.exports = class userController {
       return res.status(500).json({ error });
     }
   }
-
   static async getAllUsers(req, res) {
     const query = `SELECT * FROM usuario`;
 
@@ -117,7 +117,6 @@ module.exports = class userController {
       return res.status(500).json({ error: "Erro interno do servidor" });
     }
   }
-
   // Método de Login - Implementar
   static async loginUser(req, res) {
     const { email, password } = req.body;
@@ -145,7 +144,17 @@ module.exports = class userController {
           return res.status(401).json({ error: "Senha incorreta" });
         }
 
-        return res.status(200).json({ message: "Login bem-sucedido", user });
+        const token = jwt.sign({ id: user.id_usuario }, process.env.SECRET, {
+          expiresIn: "1h",
+        });
+        //remove um atributo de um objeto
+        delete user.password;
+
+        return res.status(200).json({
+          message: "Login-Bem-Sucedido",
+          user,
+          token,
+        });
       });
     } catch (error) {
       console.error("Erro ao executar a consulta:", error);
