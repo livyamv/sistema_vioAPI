@@ -1,19 +1,23 @@
-delimiter //
-create procedure registrar_compra(
-    in p_id_usuario int,
-    in p_id_ingresso int,
-    in p_quantidade int
-)
-begin
-declare v_id_compra int;
-insert into compra (data_compra, fk_id_usuario)
-values (now(), p_id_usuario);
-set v_id_compra = last_insert_id(); 
-insert into ingresso_compra (fk_id_compra, fk_id_ingresso, quantidade)
-values (v_id_compra, p_id_ingresso, p_quantidade)
-end; //
+DELIMITER //
 
-delimiter ;
+CREATE PROCEDURE registrar_compra(
+    IN p_id_usuario INT,
+    IN p_id_ingresso INT,
+    IN p_quantidade INT
+)
+BEGIN
+    DECLARE v_id_compra INT;
+
+    INSERT INTO compra (data_compra, fk_id_usuario)
+    VALUES (NOW(), p_id_usuario);
+
+    SET v_id_compra = LAST_INSERT_ID(); 
+
+    INSERT INTO ingresso_compra (fk_id_compra, fk_id_ingresso, quantidade)
+    VALUES (v_id_compra, p_id_ingresso, p_quantidade);
+END //
+
+DELIMITER ;
 --------------------------------------------------------------------------
 delimiter //
 create procedure total_ingresso_usuario(
